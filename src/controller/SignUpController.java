@@ -49,19 +49,25 @@ public class SignUpController extends HttpServlet {
 		LocalDate date= LocalDate.now(); // Java 8 Time API used to get system date and time at a particular instance
 		
 		
-		User user=new User();
+		User user=new User(email, password);
 		user.setEmail(email);
 		user.setPassword(password);
 		UserDAO userdao=new UserDAO();
-		user.setDate(date);
-		int checkUser = userdao.signUp(user);
+		//user.setDate(date);
+		int checkUser = 0;
+		try {
+			checkUser = userdao.signUp(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(checkUser!=0)
 		{
 						
 			System.out.println(user.getEmail());
 			System.out.println(user.getPassword());
-			System.out.println(user.getDate());
+			//System.out.println(user.getDate());
 			request.setAttribute("message", "Registration Successful");
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/signupView.jsp");
 			rd.forward(request, response);
